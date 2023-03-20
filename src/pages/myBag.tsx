@@ -1,13 +1,13 @@
 import React from "react";
 import Nav from "@/components/Nav";
 
-const Home = () => {
+const MyBag = () => {
   return (
-    <>
+    <div>
       <Nav />
-      <p>Home</p>
-    </>
+      dsads
+    </div>
   );
 };
 
-export default Home;
+export default MyBag;

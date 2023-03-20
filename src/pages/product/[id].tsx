@@ -1,13 +1,13 @@
 import React from "react";
 import Nav from "@/components/Nav";
 
-const Home = () => {
+const ProductDetail = () => {
   return (
     <>
       <Nav />
-      <p>Home</p>
+      상품 세부정보
     </>
   );
 };
 
-export default Home;
+export default ProductDetail;
