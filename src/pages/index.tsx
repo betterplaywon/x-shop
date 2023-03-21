@@ -1,11 +1,11 @@
 import React from "react";
 import Nav from "@/components/Nav";
+import ProductAll from "./product";
 
 const Home = () => {
   return (
     <>
-      <Nav />
-      <p>Home</p>
+      <ProductAll />
     </>
   );
 };
