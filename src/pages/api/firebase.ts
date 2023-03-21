@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -9,7 +8,8 @@ import {
   User,
 } from "firebase/auth";
 
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, set, get } from "firebase/database";
+import { v4 as uuid } from "uuid";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -61,19 +61,19 @@ provider.setCustomParameters({
 // };
 
 export const signIn = (): void => {
-  signInWithPopup(auth, provider).catch((error) => {
+  signInWithPopup(auth, provider).catch(error => {
     console.log(error);
   });
 };
 
 export const signOutFunc = (): void => {
-  signOut(auth).catch((error) => {
+  signOut(auth).catch(error => {
     console.log(error);
   });
 };
 
 const isAdmin = async (user: { uid: string }) => {
-  return get(ref(db, "admin")).then((snapshot) => {
+  return get(ref(db, "admin")).then(snapshot => {
     if (snapshot.exists()) {
       const admin = snapshot.val();
 
@@ -84,13 +84,30 @@ const isAdmin = async (user: { uid: string }) => {
   });
 };
 
-export const maintainUserData = (callbackFunc: {
-  (user: any): void;
-  (arg0: User | null): void;
-}) => {
-  onAuthStateChanged(auth, async (user) => {
+export const maintainUserData = callbackFunc => {
+  onAuthStateChanged(auth, async user => {
     // 유저 없는 경우는 null로 빠지도록 분기처리 필요
     const checkAdmin = user ? await isAdmin(user) : null;
     callbackFunc(checkAdmin);
+  });
+};
+
+export const addNewProduct = (product, imageURL) => {
+  const id = uuid();
+  return set(ref(db, `product/${id}`), {
+    ...product,
+    id: id,
+    price: parseInt(product.price),
+    image: imageURL,
+    options: product.options.split(","),
+  });
+};
+
+export const getProduct = () => {
+  return get(ref(db, "product")).then(snapshot => {
+    if (snapshot.exists()) {
+      return Object.values(snapshot.val());
+    }
+    return [];
   });
 };
