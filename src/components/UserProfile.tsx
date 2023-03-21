@@ -17,7 +17,7 @@ const UserProfile = ({ user }) => {
           alt={displayName}
         />
       )}
-      <span className="hidden md:block">{displayName} 님</span>
+      <span className=" font-normal">{displayName}</span>
     </div>
   );
 };

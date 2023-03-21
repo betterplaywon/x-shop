@@ -11,12 +11,16 @@
     width: 100vw;
     height: 100vh;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-      "Helvetica Neue", sans-serif;
+    font-family: "Red Hat Display", "Helvetica Neue", "Helvetica", "Arial",
+      "Spoqa Han Sans", "Malgun Gothic", "Apple SD Gothic Neo", "돋움", dotum,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     @apply flex flex-col items-center;
     /* @apply bg-zinc-900 text-gray-50; */
   }
+}
+
+input {
+  @apply p-3 outline-none border border-gray-200 my-1;
 }
