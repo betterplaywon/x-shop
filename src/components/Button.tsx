@@ -9,7 +9,7 @@ interface ButtonType {
 const Button = ({ buttonText, onClick, disabled }: ButtonType) => {
   return (
     <button
-      className="bg-brand px-3 py-2 text-white rounded-sm hover:bg-yellow-400"
+      className="bg-brand px-3 py-2 text-white rounded-sm hover:bg-white hover:text-black hover:border-2 border-solid border-black"
       onClick={onClick}
       disabled={disabled}
     >
