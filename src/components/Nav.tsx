@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { signIn, signOutFunc, maintainUserData } from "@/pages/api/firebase";
 import UserProfile from "./UserProfile";
 import Button from "./Button";
 
-const Nav = () => {
-  const [user, setUser] = useState();
+import { useUserContext } from "@/context/UserContext";
+import BagStatus from "./BagStatus";
 
-  useEffect(() => {
-    maintainUserData(user => {
-      setUser(user);
-    });
-  }, []);
+interface NavType {
+  user?: object;
+  signIn?: () => void;
+  signOut?: () => void;
+}
+
+const Nav = () => {
+  const { user, signIn, signOut }: NavType = useUserContext();
 
   return (
     <header className="flex justify-between items-center mt-3 p-3">
@@ -24,14 +25,19 @@ const Nav = () => {
         </Link>
 
         <Link href="/product">Product</Link>
-        <Link href="/product/new">New Product</Link>
+        {user?.includeAdminUid && <Link href="/product/new">New Product</Link>}
         <Link href="/myBag">my Bag</Link>
       </nav>
       <nav className="flex items-center gap-3 font-medium text-sm">
+        <Link href="/myBag">
+          <BagStatus />
+        </Link>
         <UserProfile user={user} />
-        {!user && <Button buttonText={"sign In"} onClick={signIn} disabled />}
+        {!user && (
+          <Button buttonText={"sign In"} onClick={signIn} disabled={false} />
+        )}
         {user && (
-          <Button buttonText={"sign Out"} onClick={signOutFunc} disabled />
+          <Button buttonText={"sign Out"} onClick={signOut} disabled={false} />
         )}
       </nav>
     </header>
