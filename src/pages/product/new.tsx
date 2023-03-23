@@ -4,11 +4,27 @@ import Nav from "@/components/Nav";
 import { uploadImage } from "../api/upload";
 import Image from "next/image";
 import { addNewProduct } from "../api/firebase";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useProducts } from "@/hooks/useProducts";
 
 const NewProduct = () => {
   const [file, setFile] = useState();
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // Mutation part
+  // const queryClient = useQueryClient();
+
+  // useProduct Hooks 사용 전 코드
+  // const addProduct = useMutation(
+  //   ({ product, url }) => addNewProduct(product, url),
+  //   {
+  //     onSuccess: () => queryClient.invalidateQueries(["products"]),
+  //   },
+  // );
+
+  // useProduct Hooks 사용 후 코드. 한 줄로 간략해졌다.
+  const { addProduct } = useProducts();
 
   const handleChange = e => {
     const { name, value, files } = e.target;
@@ -19,21 +35,44 @@ const NewProduct = () => {
     setProduct(prev => ({ ...prev, [name]: value }));
   };
 
+  // useMutation 적용 함수
   const registProduct = e => {
     e.preventDefault();
     setIsLoading(true);
-    uploadImage(file).then(res => {
-      console.log(res);
-      addNewProduct(product, res).then(() => alert("상품 등록 완료"));
-      setIsLoading(false);
-      setProduct({});
+    uploadImage(file).then(url => {
+      console.log(url);
+      addProduct.mutate(
+        { product, url },
+        {
+          onSuccess: () => {
+            alert("상품 등록 완료");
+            setIsLoading(false);
+            setProduct({});
+          },
+        },
+      );
     });
   };
+
+  // useMutation 적용 전의 기존 함수
+  // const registProduct = e => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   uploadImage(file).then(res => {
+  //     console.log(res);
+  //     addNewProduct(product, res).then(() => alert("상품 등록 완료"));
+  //     setIsLoading(false);
+  //     setProduct({});
+  //   });
+  // };
 
   return (
     <section className="w-full text-center">
       <Nav />
-      <h2 className="text-2xl font-bold my-4">NEW PRODUCT REGIST</h2>
+
+      <h2 className="my-3 text-gray-600 text-lg text-center pb-2 border-b border-gray-300">
+        NEW PRODUCT REGIST
+      </h2>
 
       {file && (
         <Image
