@@ -8,8 +8,13 @@ import {
   User,
 } from "firebase/auth";
 
-import { getDatabase, ref, set, get } from "firebase/database";
+import { getDatabase, ref, set, get, remove } from "firebase/database";
 import { v4 as uuid } from "uuid";
+
+interface firebaseType {
+  userId?: string;
+  product?: object;
+}
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -60,13 +65,13 @@ provider.setCustomParameters({
 //     });
 // };
 
-export const signIn = (): void => {
+export const signIn = () => {
   signInWithPopup(auth, provider).catch(error => {
     console.log(error);
   });
 };
 
-export const signOutFunc = (): void => {
+export const signOutFunc = () => {
   signOut(auth).catch(error => {
     console.log(error);
   });
@@ -110,4 +115,22 @@ export const getProduct = () => {
     }
     return [];
   });
+};
+
+export const getBag = userId => {
+  return get(ref(db, `bag/${userId}`)).then(snapshot => {
+    if (snapshot.exists()) {
+      console.log(Object.values(snapshot.val()));
+      return Object.values(snapshot.val());
+    }
+    return {};
+  });
+};
+
+export const updateOrAddBag = (userId: string, product) => {
+  return set(ref(db, `/bag/${userId}/${product.id}`), product);
+};
+
+export const deleteBag = (userId, productId) => {
+  return remove(ref(db, `/bag/${userId}/${productId}`));
 };
