@@ -1,22 +1,24 @@
 import React from "react";
 import { BsBag } from "react-icons/bs";
-import { useQuery } from "@tanstack/react-query";
-import { getBag } from "@/pages/api/firebase";
-import { useUserContext } from "@/context/UserContext";
 
-interface BagStatusType {
-  user?: {};
-  uid?: string;
-}
+// import { useUserContext } from "@/context/UserContext";
+import { useBag } from "@/hooks/useBag";
 
 const BagStatus = () => {
-  const { user, uid }: BagStatusType = useUserContext();
+  // const { user, uid }: BagStatusType = useUserContext();
 
   // productAll에서 useQuery에 동일한 데이터명과 키로 product가 존재했고, 여기서도 product로 사용해줬다.
   //하지만 기존에 product로 명명된 데이터를 받아오던 productAll 컴포넌트에서 에러가 발생했고, 여기서 문제를 알아차리게 되었다.
   // useQuery를 사용할 땐 데이터의 이름과 useQuery의 키가 겹치지 않도록 신경써서 명명해줘야 불필요한 오류를 방지할 수 있다.
 
-  const { data: products }: any = useQuery(["products"], () => getBag(uid));
+  // 230323 firebase 코드와 분리 전 코드.
+  // const { data: products }: any = useQuery(["products"], () => getBag(uid));
+
+  // 230323 firebase 코드와 분리 후 코드. 의존성을 줄일 수 있게 되었다.
+  const {
+    getBagQuery: { data: products },
+  }: any = useBag();
+
   const productLength = products?.length;
 
   return (
