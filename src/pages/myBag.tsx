@@ -1,29 +1,24 @@
 import React from "react";
 import Nav from "@/components/Nav";
-import { getBag } from "./api/firebase";
-import { useQuery } from "@tanstack/react-query";
-import { useUserContext } from "@/context/UserContext";
+
 import MyBagCard from "@/components/MyBagCard";
 import PriceTag from "@/components/PriceTag";
 import Button from "@/components/Button";
-
-interface MyBagType {
-  user?: object;
-  uid?: string;
-}
+import { useBag } from "@/hooks/useBag";
 
 const MyBag = () => {
-  const { user, uid }: MyBagType = useUserContext();
-  const { isLoading, data: products }: any = useQuery(["bag"], () =>
-    getBag(uid),
-  );
+  const {
+    getBagQuery: { isLoading, data: products },
+  }: any = useBag();
+
+  console.log(products);
+
   const shippingPrice = 3000;
-  const totalPrice = products
-    ? products?.reduce(
-        (prev, curr) => prev + parseInt(curr.price) * curr.quantity,
-        0,
-      )
-    : null;
+
+  const totalPrice = products?.reduce(
+    (prev, curr) => prev + parseInt(curr.price) * curr.quantity,
+    0,
+  );
 
   const handleOrder = () => {
     console.log("주문완료");
@@ -32,7 +27,7 @@ const MyBag = () => {
   if (isLoading) return <p>Loading</p>;
 
   const productCount = products?.length > 0;
-  console.log(products);
+
   return (
     <>
       <Nav />

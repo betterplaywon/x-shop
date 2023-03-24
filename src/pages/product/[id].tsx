@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import { useUserContext } from "@/context/UserContext";
 import { updateOrAddBag } from "../api/firebase";
+import { useBag } from "@/hooks/useBag";
 
 interface uidType {
   uid?: string;
@@ -12,7 +13,7 @@ interface ProductDetailType {
   category?: string;
   description?: string;
   image?: string;
-  options?: string;
+  options?: any;
   price?: string;
   title?: string;
   id?: string;
@@ -32,13 +33,15 @@ const ProductDetail = () => {
     title,
     id,
   }: ProductDetailType = query;
-  console.log(options);
-  const [selectOption, setSelectOption] = useState(options ?? [0]);
+
+  const [selectOption, setSelectOption] = useState(options?.[0]);
 
   const handleSelect = e => {
     const { value } = e.target;
     setSelectOption(value);
   };
+
+  const { updateOrAddBagQuery } = useBag();
 
   const handleMyBag = () => {
     const productInfo = {
@@ -49,7 +52,9 @@ const ProductDetail = () => {
       id,
       quantity: 1,
     };
-    updateOrAddBag(uid || "", productInfo);
+
+    // updateOrAddBag(uid || "", productInfo);
+    updateOrAddBagQuery.mutate(productInfo);
     alert("쇼핑백에 저장되었습니다");
   };
 
