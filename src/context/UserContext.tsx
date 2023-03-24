@@ -7,7 +7,7 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    maintainUserData(user => {
+    maintainUserData((user): any => {
       // console.log(user);
       setUser(user);
     });

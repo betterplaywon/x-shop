@@ -6,13 +6,14 @@ import { useUserContext } from "@/context/UserContext";
 import BagStatus from "./BagStatus";
 
 interface NavType {
-  user?: object;
+  user?: any;
   signIn?: () => void;
   signOut?: () => void;
 }
 
 const Nav = () => {
   const { user, signIn, signOut }: NavType = useUserContext();
+  const isAdmin = user?.includeAdminUid;
 
   return (
     <header className="flex justify-between items-center mt-3 p-3">
@@ -25,7 +26,7 @@ const Nav = () => {
         </Link>
 
         <Link href="/product">Product</Link>
-        {user?.includeAdminUid && <Link href="/product/new">New Product</Link>}
+        {isAdmin && <Link href="/product/new">New Product</Link>}
         <Link href="/myBag">my Bag</Link>
       </nav>
       <nav className="flex items-center gap-3 font-medium text-sm">
