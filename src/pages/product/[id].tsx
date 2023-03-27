@@ -2,13 +2,8 @@ import React, { useState } from "react";
 import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
-import { useUserContext } from "@/context/UserContext";
-import { updateOrAddBag } from "../api/firebase";
 import { useBag } from "@/hooks/useBag";
 
-interface uidType {
-  uid?: string;
-}
 interface ProductDetailType {
   category?: string;
   description?: string;
@@ -20,8 +15,6 @@ interface ProductDetailType {
 }
 
 const ProductDetail = () => {
-  const { uid }: uidType = useUserContext();
-
   const router = useRouter();
   const query = router.query;
   const {
@@ -44,7 +37,7 @@ const ProductDetail = () => {
   const { updateOrAddBagQuery } = useBag();
 
   const handleMyBag = () => {
-    const productInfo = {
+    const productInfo: any = {
       image,
       option: selectOption,
       price,
