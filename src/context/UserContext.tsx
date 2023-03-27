@@ -4,11 +4,10 @@ import { signIn, signOutFunc, maintainUserData } from "@/pages/api/firebase";
 const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<any>();
 
   useEffect(() => {
-    maintainUserData((user): any => {
-      // console.log(user);
+    maintainUserData(user => {
       setUser(user);
     });
   }, []);

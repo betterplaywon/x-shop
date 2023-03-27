@@ -10,12 +10,12 @@
     "es6": true
   },
   "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
     "eslint:recommended",
     "plugin:react/recommended",
     "next/core-web-vitals",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
   ],
   "rules": {
     "@typescript-eslint/explicit-module-boundary-types": "off",
